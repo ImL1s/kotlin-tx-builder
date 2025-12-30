@@ -2,6 +2,8 @@ package io.github.iml1s.tx.bitcoin
 
 import io.github.iml1s.crypto.Secp256k1Pure
 
+import io.github.iml1s.tx.crypto.Crypto
+
 object Signer {
 
     /**
@@ -25,7 +27,7 @@ object Signer {
         // 0x19 = 25 (length)
         // OP_DUP OP_HASH160 20-bytes OP_EQUALVERIFY OP_CHECKSIG
         
-        val pubKeyHash = Secp256k1Pure.ripemd160(Secp256k1Pure.sha256(publicKey))
+        val pubKeyHash = Crypto.hash160(publicKey)
         val scriptCode = ByteArray(26)
         scriptCode[0] = 0x19.toByte() // Size 25
         scriptCode[1] = 0x76.toByte() // OP_DUP

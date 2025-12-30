@@ -12,10 +12,10 @@ class EthereumTransactionTest {
         // EIP-155 example
         val tx = LegacyTransaction(
             nonce = 9,
-            gasPrice = byteArrayOf(0x04, 0xa8, 0x17, 0xc8, 0x00.toByte()), // 20 Gwei
+            gasPrice = byteArrayOf(0x04.toByte(), 0xa8.toByte(), 0x17.toByte(), 0xc8.toByte(), 0x00.toByte()), // 20 Gwei
             gasLimit = 21000,
             to = "0x3535353535353535353535353535353535353535",
-            value = byteArrayOf(0x0d, 0xe0, 0xb6, 0xb3, 0xa7, 0x64, 0x00, 0x00.toByte()), // 1 Ether
+            value = byteArrayOf(0x0d.toByte(), 0xe0.toByte(), 0xb6.toByte(), 0xb3.toByte(), 0xa7.toByte(), 0x64.toByte(), 0x00.toByte(), 0x00.toByte()), // 1 Ether
             data = byteArrayOf(),
             chainId = 1
         )
@@ -41,11 +41,11 @@ class EthereumTransactionTest {
         val tx = Eip1559Transaction(
             chainId = 1,
             nonce = 0,
-            maxPriorityFeePerGas = byteArrayOf(0x3b, 0x9a, 0xca, 0x00.toByte()), // 1 Gwei = 1000000000 = 3B9ACA00
-            maxFeePerGas = byteArrayOf(0x04, 0xa8, 0x17, 0xc8, 0x00.toByte()), // 20 Gwei = 20000000000 = 04A817C800
+            maxPriorityFeePerGas = byteArrayOf(0x3b.toByte(), 0x9a.toByte(), 0xca.toByte(), 0x00.toByte()), // 1 Gwei = 1000000000 = 3B9ACA00
+            maxFeePerGas = byteArrayOf(0x04.toByte(), 0xa8.toByte(), 0x17.toByte(), 0xc8.toByte(), 0x00.toByte()), // 20 Gwei = 20000000000 = 04A817C800
             gasLimit = 21000,
             to = "0x3535353535353535353535353535353535353535",
-            value = byteArrayOf(0x0d, 0xe0, 0xb6, 0xb3, 0xa7, 0x64, 0x00, 0x00.toByte()), // 1 Ether
+            value = byteArrayOf(0x0d.toByte(), 0xe0.toByte(), 0xb6.toByte(), 0xb3.toByte(), 0xa7.toByte(), 0x64.toByte(), 0x00.toByte(), 0x00.toByte()), // 1 Ether
             data = byteArrayOf(),
             accessList = emptyList()
         )
@@ -78,10 +78,10 @@ class EthereumTransactionTest {
     fun testStrictLegacyRLP() {
         val tx = LegacyTransaction(
             nonce = 9,
-            gasPrice = byteArrayOf(0x04, 0xa8, 0x17, 0xc8, 0x00.toByte()), 
+            gasPrice = byteArrayOf(0x04.toByte(), 0xa8.toByte(), 0x17.toByte(), 0xc8.toByte(), 0x00.toByte()), // 20 Gwei
             gasLimit = 21000,
             to = "0x3535353535353535353535353535353535353535",
-            value = byteArrayOf(0x0d, 0xe0, 0xb6, 0xb3, 0xa7, 0x64, 0x00, 0x00.toByte()),
+            value = byteArrayOf(0x0d.toByte(), 0xe0.toByte(), 0xb6.toByte(), 0xb3.toByte(), 0xa7.toByte(), 0x64.toByte(), 0x00.toByte(), 0x00.toByte()), // 1 Ether
             data = byteArrayOf(),
             chainId = 1
         )

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.github.iml1s.tx.ethereum.EthereumTransactionTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2025-12-30T07:12:24.456Z" hostname="ImL1sdeMacBook-Pro.local" time="0.011">
+  <properties/>
+  <testcase name="testEip1559TransactionEncoding" classname="io.github.iml1s.tx.ethereum.EthereumTransactionTest" time="0.01"/>
+  <testcase name="testStrictLegacyRLP" classname="io.github.iml1s.tx.ethereum.EthereumTransactionTest" time="0.001"/>
+  <testcase name="testLegacyTransactionEncoding" classname="io.github.iml1s.tx.ethereum.EthereumTransactionTest" time="0.0"/>
+  <system-out><![CDATA[02f00180843b9aca008504a817c800825208943535353535353535353535353535353535353535880de0b6b3a764000080c0
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -26,7 +26,7 @@ data class PsbtKeyValuePair(
  *
  * 由一系列鍵值對組成，以 0x00 鍵結尾
  */
-class PsbtMap(
+open class PsbtMap(
     val map: MutableMap<String, ByteArray> = mutableMapOf(),
     // 保留原始順序和未知鍵
     val unknownKeys: MutableList<PsbtKeyValuePair> = mutableListOf()

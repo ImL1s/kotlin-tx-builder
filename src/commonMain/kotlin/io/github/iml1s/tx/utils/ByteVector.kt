@@ -93,7 +93,7 @@ public open class ByteVector(internal val bytes: ByteArray, internal val offset:
 
     public fun toByteArray(): ByteArray = bytes.copyOfRange(offset, offset + size)
 
-    public fun toHex(): String = Hex.encode(bytes, offset, size)
+    public fun toHex(): String = Hex.encode(toByteArray())
 
     override fun toString(): String = toHex()
 

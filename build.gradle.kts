@@ -1,15 +1,13 @@
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.library)
     `maven-publish`
 }
 
 kotlin {
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "17"
-            }
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
         publishLibraryVariants("release")
     }
@@ -38,8 +36,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":kotlin-crypto-pure"))
-            implementation(project(":kotlin-address"))
+            implementation(project(":modules:kotlin-crypto-pure"))
+            implementation(project(":modules:kotlin-address"))
         }
         commonTest.dependencies {
             implementation(kotlin("test"))

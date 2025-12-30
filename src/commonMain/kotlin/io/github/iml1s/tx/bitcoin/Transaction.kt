@@ -1,5 +1,7 @@
 package io.github.iml1s.tx.bitcoin
 
+import io.github.iml1s.tx.crypto.Crypto
+
 /**
  * Bitcoin 交易輸入 (TxIn)
  *
@@ -488,11 +490,7 @@ data class Transaction(
     }
 
     private fun sha256(data: ByteArray): ByteArray {
-        return platformSha256(data)
+        return Crypto.sha256(data)
     }
 }
 
-/**
- * 平台特定的 SHA256 實現
- */
-internal expect fun platformSha256(data: ByteArray): ByteArray

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.github.iml1s.tx.bitcoin.IntegrationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-12-30T07:12:21.865Z" hostname="ImL1sdeMacBook-Pro.local" time="2.577">
+  <properties/>
+  <testcase name="testFullFlowSegWitPayment" classname="io.github.iml1s.tx.bitcoin.IntegrationTest" time="2.577"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

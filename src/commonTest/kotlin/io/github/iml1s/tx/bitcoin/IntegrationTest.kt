@@ -3,6 +3,7 @@ package io.github.iml1s.tx.bitcoin
 import io.github.iml1s.crypto.Bip39
 import io.github.iml1s.crypto.Pbkdf2
 import io.github.iml1s.crypto.Secp256k1Pure
+import io.github.iml1s.crypto.DefaultCryptoProvider
 import io.github.iml1s.address.AddressGenerator // Assuming AddressGenerator exists in kotlin-address
 import io.github.iml1s.address.AddressType
 import kotlin.test.Test
@@ -33,7 +34,7 @@ class IntegrationTest {
         val publicKey = Secp256k1Pure.encodePublicKey(pubPoint, compressed = true)
         
         // 2. Generate P2WPKH Address
-        val pubKeyHash = Secp256k1Pure.ripemd160(Secp256k1Pure.sha256(publicKey))
+        val pubKeyHash = DefaultCryptoProvider.ripemd160(Secp256k1Pure.sha256(publicKey))
         // Bech32 encoding manually or via AddressGenerator
         // Let's blindly trust AddressGenerator works as verified in previous tasks
         

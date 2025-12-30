@@ -7,7 +7,7 @@ import io.github.iml1s.tx.utils.ByteVector
 import io.github.iml1s.tx.utils.ByteVector32
 import io.github.iml1s.tx.utils.ByteVector64
 import io.github.iml1s.tx.utils.byteVector32
-import org.kotlincrypto.hash.sha1.SHA1
+// import org.kotlincrypto.hash.sha1.SHA1
 import org.kotlincrypto.hash.sha2.SHA256
 import kotlin.jvm.JvmStatic
 
@@ -20,8 +20,8 @@ import kotlin.jvm.JvmStatic
  * 2. 與原 bitcoin-kmp Crypto.kt API 兼容，方便遷移。
  */
 public object Crypto {
-    @JvmStatic
-    public fun sha1(input: ByteVector): ByteArray = SHA1().digest(input.toByteArray())
+    // @JvmStatic
+    // public fun sha1(input: ByteVector): ByteArray = SHA1().digest(input.toByteArray())
 
     @JvmStatic
     public fun sha256(input: ByteArray, offset: Int, len: Int): ByteArray {
@@ -39,7 +39,7 @@ public object Crypto {
     @JvmStatic
     public fun ripemd160(input: ByteArray, offset: Int, len: Int): ByteArray {
         val data = if (offset == 0 && len == input.size) input else input.copyOfRange(offset, offset + len)
-        return Ripemd160.digest(data)
+        return Ripemd160.hash(data)
     }
 
     @JvmStatic

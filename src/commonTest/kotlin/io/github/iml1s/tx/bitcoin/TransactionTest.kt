@@ -3,6 +3,7 @@ package io.github.iml1s.tx.bitcoin
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 class TransactionTest {
 
