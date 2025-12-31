@@ -150,6 +150,31 @@ public object Crypto {
     }
 
     /**
+     * Schnorr 簽名 (BIP-340)
+     */
+    @JvmStatic
+    public fun signSchnorr(data: ByteArray, privateKey: ByteArray, auxRand: ByteArray = ByteArray(32)): ByteVector64 {
+        val sig = Secp256k1Pure.signSchnorr(data, privateKey, auxRand)
+        return ByteVector64(sig)
+    }
+
+    @JvmStatic
+    public fun signSchnorr(data: ByteVector32, privateKey: ByteArray, auxRand: ByteArray = ByteArray(32)): ByteVector64 =
+        signSchnorr(data.toByteArray(), privateKey, auxRand)
+
+    /**
+     * Schnorr 簽名驗證 (BIP-340)
+     */
+    @JvmStatic
+    public fun verifySignatureSchnorr(data: ByteArray, signature: ByteVector64, publicKey: ByteArray): Boolean {
+        return Secp256k1Pure.verifySchnorr(data, publicKey, signature.toByteArray())
+    }
+
+    @JvmStatic
+    public fun verifySignatureSchnorr(data: ByteVector32, signature: ByteVector64, publicKey: ByteArray): Boolean =
+        verifySignatureSchnorr(data.toByteArray(), signature, publicKey)
+
+    /**
      * Tagged Hash (BIP-340)
      * SHA256(SHA256(tag) || SHA256(tag) || data)
      */

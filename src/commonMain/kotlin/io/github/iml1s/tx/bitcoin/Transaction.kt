@@ -73,6 +73,14 @@ data class TxInput(
         const val SEQUENCE_FINAL: Long = 0xFFFFFFFFL
         const val SEQUENCE_RBF_DISABLED: Long = 0xFFFFFFFEL
         const val SEQUENCE_LOCKTIME_ENABLED: Long = 0xFFFFFFFDL
+
+        fun read(reader: ByteArrayReader): TxInput {
+            val previousTxHash = reader.readBytes(32)
+            val previousOutputIndex = reader.readInt32LE().toLong() and 0xFFFFFFFFL
+            val scriptSig = reader.readScript()
+            val sequence = reader.readInt32LE().toLong() and 0xFFFFFFFFL
+            return TxInput(previousTxHash, previousOutputIndex, scriptSig, sequence)
+        }
     }
 }
 
@@ -106,6 +114,14 @@ data class TxOutput(
         result = 31 * result + scriptPubKey.contentHashCode()
         return result
     }
+
+    companion object {
+        fun read(reader: ByteArrayReader): TxOutput {
+            val value = reader.readInt64LE()
+            val scriptPubKey = reader.readScript()
+            return TxOutput(value, scriptPubKey)
+        }
+    }
 }
 
 /**
@@ -117,7 +133,7 @@ data class TxWitness(
     /**
      * 見證堆疊項目
      */
-    val stack: List<ByteArray>
+    val stack: List<ByteArray> = emptyList()
 ) {
     fun isEmpty(): Boolean = stack.isEmpty()
 
@@ -135,6 +151,12 @@ data class TxWitness(
 
     companion object {
         val EMPTY = TxWitness(emptyList())
+
+        fun read(reader: ByteArrayReader): TxWitness {
+            val count = reader.readVarInt().toInt()
+            val stack = (0 until count).map { reader.readScript() }
+            return TxWitness(stack)
+        }
     }
 }
 
@@ -478,13 +500,6 @@ data class Transaction(
         return doubleSha256(buffer.toByteArray())
     }
 
-    companion object {
-        const val SIGHASH_ALL = 0x01
-        const val SIGHASH_NONE = 0x02
-        const val SIGHASH_SINGLE = 0x03
-        const val SIGHASH_ANYONECANPAY = 0x80
-    }
-
     private fun doubleSha256(data: ByteArray): ByteArray {
         return sha256(sha256(data))
     }
@@ -492,5 +507,208 @@ data class Transaction(
     private fun sha256(data: ByteArray): ByteArray {
         return Crypto.sha256(data)
     }
-}
+    
+    // ================================
+    // Taproot Signing (BIP-341)
+    // ================================
+    
+    /**
+     * BIP-341 Taproot 簽名哈希 (Key Path)
+     * 
+     * @param inputIndex 輸入索引
+     * @param prevOutputs 所有被花費的 UTXO (與 inputs 順序對應)
+     * @param sighashType 簽名類型 (SIGHASH_DEFAULT, SIGHASH_ALL, etc.)
+     * @return 32-byte sighash for Schnorr signing
+     */
+    fun hashForSigningTaprootKeyPath(
+        inputIndex: Int,
+        prevOutputs: List<TxOutput>,
+        sighashType: Int = SIGHASH_DEFAULT
+    ): ByteArray {
+        require(inputIndex in inputs.indices) { "Invalid input index" }
+        require(prevOutputs.size == inputs.size) { "prevOutputs size must match inputs size" }
+        
+        val buffer = ByteArrayBuilder()
+        
+        // Epoch 0 (BIP-341)
+        buffer.writeByte(0x00)
+        
+        // SigHash type
+        buffer.writeByte(sighashType)
+        
+        // Transaction data
+        buffer.writeInt32LE(version)
+        buffer.writeInt32LE(lockTime.toInt())
+        
+        val inputType = sighashType and SIGHASH_INPUT_MASK
+        if (inputType != SIGHASH_ANYONECANPAY) {
+            // hashPrevouts - SHA256 of all outpoints
+            val prevouts = ByteArrayBuilder()
+            inputs.forEach { input ->
+                prevouts.writeBytes(input.previousTxHash)
+                prevouts.writeInt32LE(input.previousOutputIndex.toInt())
+            }
+            buffer.writeBytes(sha256(prevouts.toByteArray()))
+            
+            // hashAmounts - SHA256 of all amounts
+            val amounts = ByteArrayBuilder()
+            prevOutputs.forEach { output ->
+                amounts.writeInt64LE(output.value)
+            }
+            buffer.writeBytes(sha256(amounts.toByteArray()))
+            
+            // hashScriptPubkeys - SHA256 of all scriptPubKeys
+            val scripts = ByteArrayBuilder()
+            prevOutputs.forEach { output ->
+                scripts.writeVarInt(output.scriptPubKey.size.toLong())
+                scripts.writeBytes(output.scriptPubKey)
+            }
+            buffer.writeBytes(sha256(scripts.toByteArray()))
+            
+            // hashSequences - SHA256 of all sequences
+            val sequences = ByteArrayBuilder()
+            inputs.forEach { input ->
+                sequences.writeInt32LE(input.sequence.toInt())
+            }
+            buffer.writeBytes(sha256(sequences.toByteArray()))
+        }
+        
+        val outputType = if (sighashType == SIGHASH_DEFAULT) SIGHASH_ALL else sighashType and SIGHASH_OUTPUT_MASK
+        if (outputType == SIGHASH_ALL) {
+            // hashOutputs - SHA256 of all outputs
+            val outs = ByteArrayBuilder()
+            outputs.forEach { output ->
+                outs.writeInt64LE(output.value)
+                outs.writeVarInt(output.scriptPubKey.size.toLong())
+                outs.writeBytes(output.scriptPubKey)
+            }
+            buffer.writeBytes(sha256(outs.toByteArray()))
+        }
+        
+        // spend_type (0 for key path without annex)
+        buffer.writeByte(0x00)
+        
+        // Input-specific data
+        if (inputType == SIGHASH_ANYONECANPAY) {
+            val input = inputs[inputIndex]
+            val prevOutput = prevOutputs[inputIndex]
+            buffer.writeBytes(input.previousTxHash)
+            buffer.writeInt32LE(input.previousOutputIndex.toInt())
+            buffer.writeInt64LE(prevOutput.value)
+            buffer.writeVarInt(prevOutput.scriptPubKey.size.toLong())
+            buffer.writeBytes(prevOutput.scriptPubKey)
+            buffer.writeInt32LE(input.sequence.toInt())
+        } else {
+            buffer.writeInt32LE(inputIndex)
+        }
+        
+        if (outputType == SIGHASH_SINGLE) {
+            if (inputIndex < outputs.size) {
+                val out = outputs[inputIndex]
+                val singleOut = ByteArrayBuilder()
+                singleOut.writeInt64LE(out.value)
+                singleOut.writeVarInt(out.scriptPubKey.size.toLong())
+                singleOut.writeBytes(out.scriptPubKey)
+                buffer.writeBytes(sha256(singleOut.toByteArray()))
+            }
+        }
+        
+        // Tagged hash: TapSighash
+        return Crypto.taggedHash(buffer.toByteArray(), "TapSighash").toByteArray()
+    }
+    
+    companion object {
+        const val SIGHASH_ALL = 0x01
+        const val SIGHASH_NONE = 0x02
+        const val SIGHASH_SINGLE = 0x03
+        const val SIGHASH_ANYONECANPAY = 0x80
+        
+        // BIP-341 Taproot specific
+        const val SIGHASH_DEFAULT = 0x00
+        const val SIGHASH_INPUT_MASK = 0x80
+        const val SIGHASH_OUTPUT_MASK = 0x03
 
+        /**
+         * 反序列化交易 (支援 Hex 字符串)
+         */
+        fun read(hex: String): Transaction {
+            val bytes = hex.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
+            return read(bytes)
+        }
+
+        /**
+         * 反序列化交易 (支援 Byte Array)
+         */
+        fun read(data: ByteArray): Transaction {
+            val reader = ByteArrayReader(data)
+            return read(reader)
+        }
+
+        /**
+         * 反序列化交易 (核心邏輯)
+         */
+        fun read(reader: ByteArrayReader): Transaction {
+            val version = reader.readInt32LE()
+            
+            // Try to read input count
+            // Note: 0x00 could be input count 0 OR SegWit marker
+            val firstByte = reader.readByte()
+            var isSegWit = false
+            var flags = 0
+            
+            val inputCount: Long
+            if (firstByte == 0x00) {
+                // Potential SegWit marker
+                // Look ahead 1 byte to check for flag
+                // Note: Standard says inputs can be empty only if SegWit marker follows.
+                // But valid transaction must have inputs? 
+                // BIP-141: "It is recommended that wtxid is defined... If txin is empty..."
+                // If it is SegWit, next byte must be != 0.
+                if (reader.hasRemaining()) {
+                     val nextByte = reader.peekByte()
+                     if (nextByte != 0x00) {
+                         // It is SegWit
+                         isSegWit = true
+                         flags = reader.readByte() // consume flag
+                         inputCount = reader.readVarInt()
+                     } else {
+                         // Not SegWit, just 0 inputs?
+                         inputCount = 0
+                     }
+                } else {
+                    inputCount = 0
+                }
+            } else {
+                inputCount = reader.readVarInt(firstByte)
+            }
+            
+            // Read Inputs
+            val inputs = (0 until inputCount).map { TxInput.read(reader) }
+            
+            // Read Output Count
+            val outputCount = reader.readVarInt()
+            
+            // Read Outputs
+            val outputs = (0 until outputCount).map { TxOutput.read(reader) }
+            
+            // Read Witnesses (if SegWit)
+            val witnesses: List<TxWitness> = if (isSegWit) {
+                (0 until inputCount).map { TxWitness.read(reader) }
+            } else {
+                List(inputs.size) { TxWitness() }
+            }
+            
+            // Read LockTime
+            val lockTime = reader.readInt32LE().toLong() and 0xFFFFFFFFL
+            
+            val tx = Transaction(
+                version = version,
+                inputs = inputs,
+                outputs = outputs,
+                witnesses = witnesses, // Transaction constructor must accept witnesses
+                lockTime = lockTime
+            )
+            return tx
+        }
+    }
+}
