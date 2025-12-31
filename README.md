@@ -1,5 +1,8 @@
 # kotlin-tx-builder
 
+> [!NOTE]
+> **Acknowledgments**: Parts of the transaction building logic (Bitcoin/SegWit) are inspired by and based on [ACINQ/bitcoin-kmp](https://github.com/ACINQ/bitcoin-kmp).
+
 <p align="center">
   <img src="../docs/images/kmp_crypto_banner.png" alt="kotlin-tx-builder" width="100%">
 </p>
