@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="io.github.iml1s.tx.bitcoin.TransactionTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2025-12-30T07:12:24.448Z" hostname="ImL1sdeMacBook-Pro.local" time="0.0">
-  <properties/>
-  <testcase name="testVirtualSize" classname="io.github.iml1s.tx.bitcoin.TransactionTest" time="0.0"/>
-  <testcase name="testTransactionSerialization" classname="io.github.iml1s.tx.bitcoin.TransactionTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
