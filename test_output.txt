@@ -15,26 +15,49 @@ to your gradle.properties
 Learn more about hierarchy templates: https://kotl.in/hierarchy-template
 
 
+> Configure project :kotlin-address
+w: The following Kotlin/Native targets cannot be built on this machine and are disabled:
+iosArm64, iosSimulatorArm64, iosX64, watchosArm64, watchosSimulatorArm64, watchosX64
+To hide this message, add 'kotlin.native.ignoreDisabledTargets=true' to the Gradle properties.
+
+
 > Configure project :
 w: The following Kotlin/Native targets cannot be built on this machine and are disabled:
 iosArm64, iosSimulatorArm64, iosX64, watchosArm64, watchosSimulatorArm64, watchosX64
 To hide this message, add 'kotlin.native.ignoreDisabledTargets=true' to the Gradle properties.
 
 
+> Task :kotlin-address:checkKotlinGradlePluginConfigurationErrors SKIPPED
 > Task :kotlin-crypto-pure:checkKotlinGradlePluginConfigurationErrors SKIPPED
 > Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :kotlin-address:jvmProcessResources NO-SOURCE
 > Task :jvmProcessResources NO-SOURCE
 > Task :jvmTestProcessResources NO-SOURCE
 > Task :kotlin-crypto-pure:compileKotlinJvm UP-TO-DATE
 > Task :kotlin-crypto-pure:jvmProcessResources NO-SOURCE
 > Task :kotlin-crypto-pure:jvmMainClasses UP-TO-DATE
 > Task :kotlin-crypto-pure:jvmJar UP-TO-DATE
+> Task :kotlin-address:compileKotlinJvm UP-TO-DATE
+> Task :kotlin-address:jvmMainClasses UP-TO-DATE
+> Task :kotlin-address:jvmJar UP-TO-DATE
 > Task :compileKotlinJvm UP-TO-DATE
 > Task :jvmMainClasses UP-TO-DATE
 > Task :jvmJar UP-TO-DATE
-> Task :compileTestKotlinJvm
-> Task :jvmTestClasses
-> Task :jvmTest
+> Task :compileTestKotlinJvm UP-TO-DATE
+> Task :jvmTestClasses UP-TO-DATE
+> Task :jvmTest FAILED
 
-BUILD SUCCESSFUL in 7s
-6 actionable tasks: 2 executed, 4 up-to-date
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':jvmTest'.
+> No tests found for given includes: [ io.github.iml1s.tx.bitcoin.TxBuilderTest](--tests filter)
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 7s
+8 actionable tasks: 1 executed, 7 up-to-date

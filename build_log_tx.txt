@@ -1,0 +1,91 @@
+Initialized native services in: C:\Users\aa223\.gradle\native
+Initialized jansi services in: C:\Users\aa223\.gradle\native
+The client will now receive all logging from the daemon (pid: 121060). The daemon log file: C:\Users\aa223\.gradle\daemon\8.13\daemon-121060.out.log
+Starting 11th build in daemon [uptime: 28 mins 45.731 secs, performance: 100%, GC rate: 0.00/s, heap usage: 2% of 512 MiB, non-heap usage: 75% of 384 MiB]
+Using 32 worker leases.
+Now considering [D:\OtherProject\mine\crypto\kotlin-tx-builder, D:\OtherProject\mine\crypto\kotlin-crypto-pure, D:\OtherProject\mine\crypto\kotlin-secure-storage] as hierarchies to watch
+Watching the file system is configured to be enabled if available
+File system watching is active
+Starting Build
+Settings evaluated using settings file 'D:\OtherProject\mine\crypto\kotlin-tx-builder\settings.gradle.kts'.
+Now considering [D:\OtherProject\mine\crypto\kotlin-crypto-pure, D:\OtherProject\mine\crypto\kotlin-tx-builder, D:\OtherProject\mine\crypto\kotlin-secure-storage] as hierarchies to watch
+Now considering [D:\OtherProject\mine\crypto\kotlin-address, D:\OtherProject\mine\crypto\kotlin-crypto-pure, D:\OtherProject\mine\crypto\kotlin-tx-builder, D:\OtherProject\mine\crypto\kotlin-secure-storage] as hierarchies to watch
+Projects loaded. Root project using build file 'D:\OtherProject\mine\crypto\kotlin-tx-builder\build.gradle.kts'.
+Included projects: [root project 'kotlin-tx-builder']
+
+> Configure project :kotlin-crypto-pure
+Evaluating project ':kotlin-crypto-pure' using build file 'D:\OtherProject\mine\crypto\kotlin-crypto-pure\build.gradle.kts'.
+Resolved plugin [id: 'org.jetbrains.kotlin.multiplatform', version: '2.1.0']
+Resolved plugin [id: 'com.android.library', version: '8.5.2']
+Resolved plugin [id: 'org.gradle.maven-publish']
+Using Kotlin Gradle Plugin gradle85 variant
+Using default execution profile
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+w: The following Kotlin/Native targets cannot be built on this machine and are disabled:
+iosArm64, iosSimulatorArm64, iosX64, watchosArm64, watchosSimulatorArm64, watchosX64
+To hide this message, add 'kotlin.native.ignoreDisabledTargets=true' to the Gradle properties.
+
+w: The Default Kotlin Hierarchy Template was not applied to 'project ':kotlin-crypto-pure'':
+Explicit .dependsOn() edges were configured for the following source sets:
+[iosArm64Main, iosMain, iosSimulatorArm64Main, iosX64Main, watchosArm64Main, watchosMain, watchosSimulatorArm64Main, watchosX64Main]
+
+Consider removing dependsOn-calls or disabling the default template by adding
+    'kotlin.mpp.applyDefaultHierarchyTemplate=false'
+to your gradle.properties
+
+Learn more about hierarchy templates: https://kotl.in/hierarchy-template
+
+Registering project ':kotlin-crypto-pure' in composite build. Will substitute for module 'io.github.iml1s:kotlin-crypto-pure'.
+
+> Configure project :kotlin-address
+Evaluating project ':kotlin-address' using build file 'D:\OtherProject\mine\crypto\kotlin-address\build.gradle.kts'.
+Resolved plugin [id: 'org.jetbrains.kotlin.multiplatform', version: '2.1.0']
+Resolved plugin [id: 'com.android.library', version: '8.5.2']
+Resolved plugin [id: 'org.gradle.maven-publish']
+Using Kotlin Gradle Plugin gradle85 variant
+Using default execution profile
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+w: The following Kotlin/Native targets cannot be built on this machine and are disabled:
+iosArm64, iosSimulatorArm64, iosX64, watchosArm64, watchosSimulatorArm64, watchosX64
+To hide this message, add 'kotlin.native.ignoreDisabledTargets=true' to the Gradle properties.
+
+Registering project ':kotlin-address' in composite build. Will substitute for module ':kotlin-address'.
+
+> Configure project :
+Evaluating root project 'kotlin-tx-builder' using build file 'D:\OtherProject\mine\crypto\kotlin-tx-builder\build.gradle.kts'.
+Resolved plugin [id: 'org.jetbrains.kotlin.multiplatform', version: '2.1.0']
+Resolved plugin [id: 'com.android.library', version: '8.5.2']
+Resolved plugin [id: 'org.gradle.maven-publish']
+Using Kotlin Gradle Plugin gradle85 variant
+Using default execution profile
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+w: The following Kotlin/Native targets cannot be built on this machine and are disabled:
+iosArm64, iosSimulatorArm64, iosX64, watchosArm64, watchosSimulatorArm64, watchosX64
+To hide this message, add 'kotlin.native.ignoreDisabledTargets=true' to the Gradle properties.
+
+All projects evaluated.
+Task name matched 'assemble'
+Selected primary task 'assemble' from project :
+Found project 'project :kotlin-crypto-pure' as substitute for module 'io.github.iml1s:kotlin-crypto-pure'.
+Found project 'project :kotlin-crypto-pure' as substitute for module 'io.github.iml1s:kotlin-crypto-pure'.
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Could not determine the dependencies of task ':compileCommonMainKotlinMetadata'.
+> Could not resolve all dependencies for configuration ':commonMainResolvableDependenciesMetadata'.
+   > Could not find io.github.iml1s:kotlin-address:.
+     Required by:
+         root project :
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 6s
+Watched directory hierarchies: [D:\OtherProject\mine\crypto\kotlin-crypto-pure, D:\OtherProject\mine\crypto\kotlin-tx-builder, D:\OtherProject\mine\crypto\kotlin-secure-storage]

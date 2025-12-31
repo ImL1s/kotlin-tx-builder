@@ -7,6 +7,8 @@ object Hex {
     }
     
     fun encode(bytes: ByteArray): String {
-        return bytes.joinToString("") { "%02x".format(it) }
+        return bytes.joinToString("") { (it.toInt() and 0xff).toString(16).padStart(2, '0') }
     }
 }
+
+fun ByteArray.toHex(): String = Hex.encode(this)

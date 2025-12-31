@@ -142,4 +142,33 @@ class ByteArrayReader(private val data: ByteArray) {
     fun hasRemaining(): Boolean = offset < data.size
 
     fun getOffset(): Int = offset
+
+    fun peekByte(): Int {
+        require(offset < data.size) { "End of data" }
+        return data[offset].toInt() and 0xFF
+    }
+
+    /**
+     * 讀取可變長度整數 (當已經讀取了第一個字節時使用)
+     */
+    fun readVarInt(first: Int): Long {
+        return when {
+            first < 0xFD -> first.toLong()
+            first == 0xFD -> {
+                val b0 = readByte().toLong()
+                val b1 = readByte().toLong()
+                b0 or (b1 shl 8)
+            }
+            first == 0xFE -> readInt32LE().toLong() and 0xFFFFFFFFL
+            else -> readInt64LE()
+        }
+    }
+
+    /**
+     * 讀取 Script (VarInt length + bytes)
+     */
+    fun readScript(): ByteArray {
+        val len = readVarInt().toInt()
+        return readBytes(len)
+    }
 }

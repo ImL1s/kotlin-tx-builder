@@ -33,7 +33,7 @@ object Signer {
         scriptCode[1] = 0x76.toByte() // OP_DUP
         scriptCode[2] = 0xA9.toByte() // OP_HASH160
         scriptCode[3] = 0x14.toByte() // Push 20 bytes
-        System.arraycopy(pubKeyHash, 0, scriptCode, 4, 20)
+        pubKeyHash.copyInto(scriptCode, destinationOffset = 4)
         scriptCode[24] = 0x88.toByte() // OP_EQUALVERIFY
         scriptCode[25] = 0xAC.toByte() // OP_CHECKSIG
 
@@ -103,12 +103,12 @@ object Signer {
         
         out[idx++] = 0x02.toByte() // INT
         out[idx++] = rDer.size.toByte()
-        System.arraycopy(rDer, 0, out, idx, rDer.size)
+        rDer.copyInto(out, destinationOffset = idx)
         idx += rDer.size
         
         out[idx++] = 0x02.toByte() // INT
         out[idx++] = sDer.size.toByte()
-        System.arraycopy(sDer, 0, out, idx, sDer.size)
+        sDer.copyInto(out, destinationOffset = idx)
         // idx += sDer.size
         
         return out

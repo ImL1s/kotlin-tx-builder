@@ -1,6 +1,33 @@
 package io.github.iml1s.tx.bitcoin
 
 import io.github.iml1s.tx.crypto.Crypto
+import io.github.iml1s.tx.utils.ByteVector32
+import io.github.iml1s.tx.utils.byteVector32
+import kotlin.jvm.JvmField
+
+/**
+ * This is the double hash of a transaction serialized without witness data.
+ * Note that this is confusingly called `txid` in some context (e.g. in lightning messages).
+ */
+public data class TxHash(@JvmField val value: ByteVector32) {
+    public constructor(hash: ByteArray) : this(hash.byteVector32())
+    public constructor(hash: String) : this(ByteVector32(hash))
+    public constructor(txid: TxId) : this(txid.value.reversed())
+
+    override fun toString(): String = value.toString()
+}
+
+/**
+ * This contains the same data as [TxHash], but encoded with the opposite endianness.
+ * Some explorers and bitcoin RPCs use this encoding for their inputs.
+ */
+public data class TxId(@JvmField val value: ByteVector32) {
+    public constructor(txid: ByteArray) : this(txid.byteVector32())
+    public constructor(txid: String) : this(ByteVector32(txid))
+    public constructor(hash: TxHash) : this(hash.value.reversed())
+
+    override fun toString(): String = value.toString()
+}
 
 /**
  * Bitcoin 交易輸入 (TxIn)
@@ -216,18 +243,18 @@ data class Transaction(
     /**
      * 計算 txid (不含 witness 資料)
      */
-    fun getTxId(): ByteArray {
-        val serialized = serializeWithoutWitness()
-        return doubleSha256(serialized).reversedArray()
-    }
+    val hash: TxHash get() = TxHash(doubleSha256(serializeWithoutWitness()))
+    
+    val txid: TxId get() = TxId(hash)
 
     /**
      * 計算 wtxid (含 witness 資料)
      */
-    fun getWTxId(): ByteArray {
-        val serialized = serialize()
-        return doubleSha256(serialized).reversedArray()
-    }
+    val wtxid: TxId get() = TxId(doubleSha256(serialize()))
+
+    fun getTxId(): ByteArray = hash.value.toByteArray()
+
+    fun getWTxId(): ByteArray = wtxid.value.reversed().toByteArray()
 
     /**
      * 序列化交易（完整格式）
