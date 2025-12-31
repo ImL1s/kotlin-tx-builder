@@ -36,8 +36,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":modules:kotlin-crypto-pure"))
-            implementation(project(":modules:kotlin-address"))
+            implementation("io.github.iml1s:kotlin-crypto-pure")
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
