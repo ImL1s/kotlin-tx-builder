@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="io.github.iml1s.tx.bitcoin.ScriptTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2025-12-31T02:17:21.160Z" hostname="WIN_DESKTOP" time="0.044">
+<testsuite name="io.github.iml1s.tx.bitcoin.ScriptTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2025-12-31T02:24:42.395Z" hostname="WIN_DESKTOP" time="0.044">
   <properties/>
-  <testcase name="testP2WPKH_Generation[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.042"/>
-  <testcase name="testP2TR_Generation[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.0"/>
-  <testcase name="testP2WSH_Generation[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.0"/>
-  <testcase name="testPushData_SmallData[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.0"/>
-  <testcase name="testPushData_EmptyData[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.0"/>
-  <testcase name="testP2PKH_Generation[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.0"/>
+  <testcase name="testP2SH_Structure[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.037"/>
+  <testcase name="testPushData_SmallNumber_ReturnsDirectPush[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.0"/>
+  <testcase name="testP2PKH_WithKnownVector[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.004"/>
+  <testcase name="testPushData_RegularData_ReturnsLengthPrefixed[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.0"/>
+  <testcase name="testP2WSH_Structure[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.0"/>
+  <testcase name="testGetWitnessVersion_InvalidScripts[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.0"/>
+  <testcase name="testP2TR_WithKnownVector[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.001"/>
+  <testcase name="testGetWitnessVersion_VariousVersions[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.0"/>
+  <testcase name="testP2WPKH_WithKnownVector[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.0"/>
+  <testcase name="testPushData_EmptyData_ReturnsOP0[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.001"/>
+  <testcase name="testPushData_LargeData_UsesPUSHDATA1[jvm]" classname="io.github.iml1s.tx.bitcoin.ScriptTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
