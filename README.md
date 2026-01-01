@@ -26,6 +26,7 @@ Pure Kotlin Multiplatform library for building and signing cryptocurrency transa
 ### Bitcoin (BTC)
 - **Transaction Models**: Full support for Legacy and SegWit (BIP141) transactions.
 - **PSBT (BIP174)**: Partially Signed Bitcoin Transaction support for interoperability.
+- **Taproot (BIP341)**: Support for Taproot Key Path signing (`hashForSigningTaprootKeyPath`).
 - **Serialization**: Full raw transaction serialization/deserialization.
 
 ### Ethereum (ETH)
@@ -106,4 +107,18 @@ val tx = Eip1559Transaction(
 )
 
 val rlpEncoded = tx.encode(forSigning = true)
+```
+
+### Taproot Signing (BIP-341)
+
+```kotlin
+// Calculate Sighash for Taproot Key Spending
+val sighash = tx.hashForSigningTaprootKeyPath(
+    inputIndex = 0,
+    prevOutputs = listOf(utxo1, utxo2), // Must provide all spent outputs
+    sighashType = Transaction.SIGHASH_DEFAULT
+)
+
+// Sign with schnorr (using kotlin-crypto-pure)
+val signature = Secp256k1Pure.schnorrSign(sighash, privateKey)
 ```
