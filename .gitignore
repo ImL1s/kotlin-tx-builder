@@ -1,7 +1,11 @@
-.gradle/
-build/
-.idea/
-*.iml
-test_output.txt
-local.properties
+
+# Standard Kotlin/Gradle Ignores
+.gradle
+/build
+/.idea
 .DS_Store
+/local.properties
+*.iml
+.cxx
+/captures
+.externalNativeBuild
