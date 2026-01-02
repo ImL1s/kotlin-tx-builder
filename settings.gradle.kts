@@ -17,5 +17,12 @@ dependencyResolutionManagement {
 
 rootProject.name = "kotlin-tx-builder"
 
-includeBuild("../kotlin-crypto-pure")
-includeBuild("../kotlin-address")
+val cryptoPure = file("../kotlin-crypto-pure")
+if (cryptoPure.exists()) {
+    includeBuild(cryptoPure)
+}
+
+val address = file("../kotlin-address")
+if (address.exists()) {
+    includeBuild(address)
+}
