@@ -17,9 +17,25 @@
   <strong>🔨 Pure Kotlin Multiplatform library for building and signing cryptocurrency transactions.</strong>
 </p>
 
-# Cryptocurrency Transaction Builder
+## 🏗️ Transaction Construction Flow
 
-Pure Kotlin Multiplatform library for building and signing cryptocurrency transactions.
+```mermaid
+graph LR
+    DSL[Fluent DSL] --> B[Transaction Builder]
+    B --> IN[Inputs / OutPoints]
+    B --> OUT[Outputs / Scripts]
+    
+    subgraph "Signing Pipeline"
+        IN --> SH[Sighash Calculation]
+        SH --> SIGN[Signer Module]
+        SIGN --> SIG[Witness / SigScript]
+    end
+    
+    SIG --> TX[Signed Transaction]
+    TX --> HEX[Raw Hex Serialization]
+```
+
+---
 
 ## Features
 
