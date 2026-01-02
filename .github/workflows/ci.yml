@@ -6,9 +6,16 @@ on:
   pull_request:
     branches: [ "main", "dev", "master" ]
 
+permissions:
+  contents: read
+  packages: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_ACTOR: ${{ github.actor }}
     steps:
     - uses: actions/checkout@v4
       with:
@@ -37,4 +44,5 @@ jobs:
     - name: Build with Gradle
       run: |
         cd kotlin-tx-builder
-        ./gradlew build --stacktrace
+        chmod +x gradlew
+        ./gradlew build
