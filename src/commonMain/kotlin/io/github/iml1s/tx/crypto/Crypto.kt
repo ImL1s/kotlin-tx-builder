@@ -154,7 +154,7 @@ public object Crypto {
      */
     @JvmStatic
     public fun signSchnorr(data: ByteArray, privateKey: ByteArray, auxRand: ByteArray = ByteArray(32)): ByteVector64 {
-        val sig = Secp256k1Pure.signSchnorr(data, privateKey, auxRand)
+        val sig = Secp256k1Pure.schnorrSign(data, privateKey, auxRand)
         return ByteVector64(sig)
     }
 
@@ -167,7 +167,7 @@ public object Crypto {
      */
     @JvmStatic
     public fun verifySignatureSchnorr(data: ByteArray, signature: ByteVector64, publicKey: ByteArray): Boolean {
-        return Secp256k1Pure.verifySchnorr(data, publicKey, signature.toByteArray())
+        return Secp256k1Pure.schnorrVerify(data, publicKey, signature.toByteArray())
     }
 
     @JvmStatic
