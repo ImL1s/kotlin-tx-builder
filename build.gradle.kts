@@ -4,6 +4,9 @@ plugins {
     `maven-publish`
 }
 
+group = "io.github.iml1s"
+version = "1.3.0"
+
 kotlin {
     androidTarget {
         compilerOptions {
