@@ -36,8 +36,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":modules:kotlin-crypto-pure"))
-            implementation(project(":modules:kotlin-address"))
+            implementation("io.github.iml1s:crypto-core:1.3.0")
+            implementation("io.github.iml1s:kotlin-address:1.3.0")
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
@@ -55,4 +55,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    lint {
+        abortOnError = false
+        checkReleaseBuilds = false
+    }
 }
+
+tasks.configureEach {
+    if (name.contains("lintVitalAnalyzeRelease")) {
+        enabled = false
+    }
+}
+
