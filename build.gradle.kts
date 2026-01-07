@@ -68,6 +68,7 @@ android {
 tasks.configureEach {
     if (name.contains("lintVitalAnalyzeRelease") || 
         name.contains("generateDebugAndroidTestLintModel") ||
+        name.contains("generateDebugUnitTestLintModel") ||
         name.contains("lintReportDebug") || 
         name.contains("lintReportRelease") ||
         name.contains("lintAnalyzeDebugUnitTest") ||
