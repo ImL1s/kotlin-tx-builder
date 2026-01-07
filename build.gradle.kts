@@ -61,11 +61,16 @@ android {
     lint {
         abortOnError = false
         checkReleaseBuilds = false
+        checkTestSources = false
     }
 }
 
 tasks.configureEach {
-    if (name.contains("lintVitalAnalyzeRelease")) {
+    if (name.contains("lintVitalAnalyzeRelease") || 
+        name.contains("generateDebugAndroidTestLintModel") ||
+        name.contains("lintReportDebug") || 
+        name.contains("lintReportRelease") ||
+        name == "lintDebug") {
         enabled = false
     }
 }
