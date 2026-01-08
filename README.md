@@ -1,3 +1,7 @@
+# ⚠️ Deprecated
+
+> This project has been moved into [web3-kmp](https://github.com/ImL1s/web3-kmp). Please check the new repository for the latest updates.
+
 # kotlin-tx-builder
 
 > [!NOTE]
@@ -138,3 +142,4 @@ val sighash = tx.hashForSigningTaprootKeyPath(
 // Sign with schnorr (using kotlin-crypto-pure)
 val signature = Secp256k1Pure.schnorrSign(sighash, privateKey)
 ```
+
